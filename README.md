@@ -1,6 +1,4 @@
-# DentalCamera_teeth_detection
-
-# Teeth Cleaning Robot – AI-Enhanced Camera System
+# AI-Enhanced Camera System for Future Teeth Cleaning Robot 
 
 This project is a **software prototype** developed as part of a semester-long medical device software engineering course. The goal was to simulate the vision of a semi-autonomous **dental cleaning robot**, focusing on the **AI-enhanced camera system** responsible for **real-time plaque detection** and **interactive edge enhancement** using live video.
 
@@ -58,6 +56,8 @@ To enhance performace, the user can also choose to use another pre-trained model
    ```
 4. In the GUI:
    - Select a script: `workflow.py` or `self-trained.py`
+      - `self-trained.py` is designed for camera and machine with more limited performance, it runs smoother and requires less resources;
+      -  `workflow.py` is designed for camera and machine with better performance, it only works better than `self-trained.py` when your camera supports 1080p HD video recording example will be the built-in camera for MacBook Air;
    - (Optional) Toggle **Test Mode** to activate the `_test.py` variants with detailed timing
    - Click **Start**
    - Use `p` key in the window to pause and apply Canny edge overlay
