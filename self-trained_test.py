@@ -65,9 +65,10 @@ def overlay_edges_on_image(image, edges, color=(0, 0, 255)):
 
 
 def my_custom_sink(predictions: dict, video_frame: VideoFrame):
-    global _total_wf_ms, _wf_frames, _last_frame, _between_frames
+    global _total_wf_ms, _wf_frames, _last_frame, _between_frames, _outline, _detect
     
-    capture_ts = getattr(video_frame, "frame_timestamp", None)
+    capture_ts_attr = getattr(video_frame, "frame_timestamp", None)
+    capture_ts = capture_ts_attr.timestamp()
     if _wf_frames > 0:
         _between_frames += (capture_ts -_last_frame) * 1000
     

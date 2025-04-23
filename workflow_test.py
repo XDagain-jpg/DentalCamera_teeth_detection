@@ -2,19 +2,23 @@ from inference import InferencePipeline
 import cv2
 from inference.core.interfaces.camera.entities import VideoFrame
 import time, threading
-
+from datetime import datetime
 
 _total_wf_ms = 0.0
 _last_frame = 0.0
 _between_frames = 0.0
 _wf_frames = 0
+_warm_up = True
 _lock = threading.Lock()
 
 
 def my_sink(result, video_frame):
-    global _total_wf_ms, _wf_frames, _last_frame, _between_frames
+    global _total_wf_ms, _wf_frames, _last_frame, _between_frames,_warm_up
     
-    capture_ts = getattr(video_frame, "frame_timestamp", None)
+    #capture_ts = getattr(video_frame, "frame_timestamp", None)
+
+    capture_time = getattr(video_frame, "frame_timestamp", None)
+    capture_ts = capture_time.timestamp()
     if _wf_frames > 0:
         _between_frames += (capture_ts -_last_frame) * 1000
     
@@ -29,7 +33,14 @@ def my_sink(result, video_frame):
             _total_wf_ms += elapsed_ms
             _wf_frames += 1
             _last_frame = capture_ts
-    
+
+        if (_warm_up == True) & (_wf_frames>=10):
+            with _lock:
+                _total_wf_ms = 0.0
+                _between_frames = 0.0
+                _wf_frames = 0
+                _warm_up = False
+            
         if _wf_frames % 10 == 0:
             print(f"Avg after {_wf_frames} frames, process time: {_total_wf_ms/_wf_frames:.1f} ms")
             print(f"Between each frame captured: {_between_frames/_wf_frames:.1f} ms")
