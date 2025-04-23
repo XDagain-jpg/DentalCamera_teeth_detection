@@ -31,11 +31,11 @@ We follow both **IEC 62304 software life cycle principles** and **Agile Scrum** 
 
 The project uses a **self-trained** model hosted on Roboflow:
 - `model_id = "dental-2uuam-ex2sf/2"`
-- It segments **tooth**, **gum**, and **plaque** from live webcam frames.
+- It segments **tooth**, **caries** and **cavity** from live webcam frames.
 
 To enhance performace, the user can also choose to use another pre-trained model hosted on Roboflow:
 - `model_id = "dentalai2/1"`
-- It also segments **tooth**, **gum**, and **plaque** from live webcam frames.
+- It also segments **tooth** from live webcam frames.
 
 ---
 
