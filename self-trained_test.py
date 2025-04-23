@@ -135,10 +135,16 @@ def my_custom_sink(predictions: dict, video_frame: VideoFrame):
         _last_frame = capture_ts
     
     if _wf_frames % 10 == 0:
-        print(f"Avg after {_wf_frames} frames, detect time: {_detect/_wf_frames:.1f} ms")
-        print(f"Outline time: {_outline/_wf_frames:.1f} ms")
-        print(f"Total Processing time: {_total_wf_ms/_wf_frames:.1f} ms")
-        print(f"Between each frame captured: {_between_frames/_wf_frames:.1f} ms")
+        # print(f"Avg after {_wf_frames} frames, detect time: {_detect/_wf_frames:.1f} ms")
+        # print(f"Outline time: {_outline/_wf_frames:.1f} ms")
+        # print(f"Total Processing time: {_total_wf_ms/_wf_frames:.1f} ms")
+        # print(f"Between each frame captured: {_between_frames/_wf_frames:.1f} ms")
+
+        ############################ Allow UI print out version!!!############################
+        print(f"Avg after {_wf_frames} frames, detect time: {_detect/_wf_frames:.1f} ms", flush=True)
+        print(f"Outline time: {_outline/_wf_frames:.1f} ms", flush=True)
+        print(f"Total Processing time: {_total_wf_ms/_wf_frames:.1f} ms", flush=True)
+        print(f"Between each frame captured: {_between_frames/_wf_frames:.1f} ms", flush=True)
 
 
 

@@ -92,42 +92,80 @@ class TeethApp:
         self.pipeline_process = None
 
 
-    def start_pipeline(self):
-        self.start_button.config(state = "disabled")
-        self.write_log("Launching pipeline...")
+    # def start_pipeline(self):
+    #     self.start_button.config(state = "disabled")
+    #     self.write_log("Launching pipeline...")
 
-        # Progress Bar
-        # self.progress.pack(pady=5)
-        # self.progress.start(10)
+    #     # Progress Bar
+    #     # self.progress.pack(pady=5)
+    #     # self.progress.start(10)
+
+    #     def run():
+    #         selected_script = self.selected_script.get()
+
+    #         self.pipeline_process = subprocess.Popen(
+    #             [sys.executable, selected_script],
+    #             stdout = subprocess.PIPE,
+    #             stderr = subprocess.STDOUT,
+    #             universal_newlines = True
+    #         )
+
+    #         # for line in self.pipeline_process.stdout:
+    #         #     self.write_log(line.strip())
+    #         for line in self.pipeline_process.stdout:
+    #             line = line.strip()
+
+    #             # Progress Bar
+    #             # if self.progress.winfo_ismapped():
+    #             #     self.progress.stop()
+    #             #     self.progress.pack_forget()
+
+    #             if self.isTest.get():
+    #                 self.write_log(line)
+    #             else:
+    #                 if any(keyword in line.lower() for keyword in ["start", "launch", "initialized", "loading", "ready", "success", "successfully", "error"]):
+    #                     self.write_log(line)
+
+    #     threading.Thread(target = run, daemon = True).start()
+
+
+    def start_pipeline(self):
+        self.start_button.config(state="disabled")
+
+        script = self.selected_script.get()
+
+        # Determine actual script based on test mode toggle
+        if self.isTest.get():
+            self.write_log(f"Launching TEST version of: {script}")
+            if script == "workflow.py":
+                script_to_run = "workflow_test.py"
+            elif script == "self-trained.py":
+                script_to_run = "self-trained_test.py"
+            else:
+                self.write_log("Unknown test script.")
+                return
+        else:
+            self.write_log(f"Launching pipeline: {script}")
+            script_to_run = script
 
         def run():
-            selected_script = self.selected_script.get()
-
             self.pipeline_process = subprocess.Popen(
-                [sys.executable, selected_script],
-                stdout = subprocess.PIPE,
-                stderr = subprocess.STDOUT,
-                universal_newlines = True
+                [sys.executable, script_to_run],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                universal_newlines=True
             )
 
-            # for line in self.pipeline_process.stdout:
-            #     self.write_log(line.strip())
             for line in self.pipeline_process.stdout:
                 line = line.strip()
 
-                # Progress Bar
-                # if self.progress.winfo_ismapped():
-                #     self.progress.stop()
-                #     self.progress.pack_forget()
-
                 if self.isTest.get():
-                    self.write_log(line)
+                    self.write_log(line)  # show all logs
                 else:
-                    if any(keyword in line.lower() for keyword in ["start", "launch", "initialized", "loading", "ready", "success", "successfully", "error"]):
+                    if any(kw in line.lower() for kw in ["start", "launch", "initialized", "loading", "ready", "success", "error"]):
                         self.write_log(line)
 
-        threading.Thread(target = run, daemon = True).start()
-
+        threading.Thread(target=run, daemon=True).start()
 
 
     def write_log(self, text):
